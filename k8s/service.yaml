@@ -8,7 +8,7 @@ spec:
   selector:
     app: food-app
 
-  type: NodePort
+  type: LoadBalancer
 
   ports:
     - protocol: TCP
