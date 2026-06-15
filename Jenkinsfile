@@ -24,15 +24,21 @@ pipeline {
         }
 
         stage('Test Docker Image') {
-           steps {
-               sh '''
-                   docker run -d --name food-test -p 8085:80 ${DOCKER_IMAGE}:${DOCKER_TAG}
+            steps {
+                sh '''
+                    docker rm -f food-test || true
 
-                   sleep 20
+           	    docker run -d --name food-test -p 8085:80 ${DOCKER_IMAGE}:${DOCKER_TAG}
 
-                   curl -f http://localhost:8085
+            	    echo "Waiting for container to start..."
+            	    sleep 30
 
-                   docker rm -f food-test
+            	   docker ps
+            	   docker logs food-test
+
+            	   curl -f http://localhost:8085
+
+           	   docker rm -f food-test
                '''
             }
         }
